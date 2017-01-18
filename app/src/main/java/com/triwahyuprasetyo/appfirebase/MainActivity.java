@@ -11,23 +11,24 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
 
-    private DatabaseReference mRef;
-    private Button buttonAddValue1,buttonAddValue2;
-    private EditText editTextValue;
+    private DatabaseReference mRef1,mRef2,mRef3;
+    private Button buttonAddValue1,buttonAddValue2, btPost;
+    private EditText editTextValue, etKey,etValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        mRef1 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://appfirebase-2fd28.firebaseio.com");
+        mRef2 = FirebaseDatabase.getInstance().getReferenceFromUrl("https://appfirebase-2fd28.firebaseio.com/Users");
 
         editTextValue= (EditText) findViewById(R.id.editTextValue);
         buttonAddValue1 = (Button) findViewById(R.id.btAddVal);
         buttonAddValue1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://appfirebase-2fd28.firebaseio.com");
                 String value=editTextValue.getText().toString();
-                DatabaseReference dbR = mRef.child("Name");
+                DatabaseReference dbR = mRef1.child("Name");
                 dbR.setValue(value);
             }
         });
@@ -35,9 +36,21 @@ public class MainActivity extends AppCompatActivity {
         buttonAddValue2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mRef = FirebaseDatabase.getInstance().getReferenceFromUrl("https://appfirebase-2fd28.firebaseio.com/Users");
                 String value=editTextValue.getText().toString();
-                DatabaseReference dbR = mRef.child("Age");
+                DatabaseReference dbR = mRef2.child("Age");
+                dbR.setValue(value);
+            }
+        });
+
+        etKey= (EditText) findViewById(R.id.etKey);
+        etValue= (EditText) findViewById(R.id.etValue);
+        btPost= (Button) findViewById(R.id.buttonPost);
+        btPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String key=etKey.getText().toString();
+                String value=etValue.getText().toString();
+                DatabaseReference dbR = mRef2.child(key);
                 dbR.setValue(value);
             }
         });
